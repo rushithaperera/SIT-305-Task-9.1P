@@ -4,110 +4,129 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AddPlace">
 
 
-    <ImageView
-        android:id="@+id/logo"
+    <EditText
+        android:id="@+id/place_name"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:srcCompat="@drawable/nearby_restaurant_1627227_1379436"
-        app:layout_constraintStart_toStartOf="@id/logoLeft"
-        app:layout_constraintEnd_toEndOf="@id/logoRight"
-        app:layout_constraintTop_toBottomOf="@id/logoTop"
-        app:layout_constraintBottom_toTopOf="@id/logoBot"/>
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Place Name"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@id/left"
+        app:layout_constraintEnd_toEndOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/nameTop"
+        app:layout_constraintBottom_toTopOf="@id/nameBot"/>
+
+    <EditText
+        android:id="@+id/location_details"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Location"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_baseline_location"
+        android:background="@android:drawable/editbox_background"
+        app:layout_constraintStart_toStartOf="@id/left"
+        app:layout_constraintEnd_toEndOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/locationTop"
+        app:layout_constraintBottom_toTopOf="@id/locationBot"/>
 
     <Button
-        android:id="@+id/buttonAdd"
+        android:id="@+id/get_currentLocation"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="ADD A NEW PLACE"
-        app:layout_constraintStart_toStartOf="@id/btnLeft"
-        app:layout_constraintEnd_toEndOf="@id/btnRight"
-        app:layout_constraintTop_toBottomOf="@id/addTop"
-        app:layout_constraintBottom_toTopOf="@id/addBot"/>
+        app:layout_constraintStart_toStartOf="@id/left"
+        app:layout_constraintEnd_toEndOf="@id/right"
+        app:layout_constraintTop_toBottomOf="@id/currentTop"
+        app:layout_constraintBottom_toTopOf="@id/currentBot"/>
 
     <Button
-        android:id="@+id/buttonShow"
+        android:id="@+id/show_locations"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="SHOW ALL ON MAP"
-        app:layout_constraintStart_toStartOf="@id/btnLeft"
-        app:layout_constraintEnd_toEndOf="@id/btnRight"
+        android:text="ADD A NEW PLACE"
+        app:layout_constraintStart_toStartOf="@id/left"
+        app:layout_constraintEnd_toEndOf="@id/right"
         app:layout_constraintTop_toBottomOf="@id/showTop"
         app:layout_constraintBottom_toTopOf="@id/showBot"/>
 
 
-
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/logoLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/logoRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.7"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/logoTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/logoBot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/btnLeft"
+        android:id="@+id/left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.2"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/btnRight"
+        android:id="@+id/right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.8"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/addTop"
+        android:id="@+id/nameTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55"/>
+        app:layout_constraintGuide_percent="0.2"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/addBot"
+        android:id="@+id/nameBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65"/>
+        app:layout_constraintGuide_percent="0.3"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/locationTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/locationBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/currentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/currentBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/showTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7"/>
+        app:layout_constraintGuide_percent="0.75"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/showBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8"/>
+        app:layout_constraintGuide_percent="0.85"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
