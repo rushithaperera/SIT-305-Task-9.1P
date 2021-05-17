@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -25,6 +26,10 @@ public class AddPlace extends AppCompatActivity {
     EditText placeName, placeLocation;
     Button currentLocation, showOnMap;
 
+    String latLang;
+    String latitude;
+    String longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +37,10 @@ public class AddPlace extends AppCompatActivity {
 
         placeName = findViewById(R.id.place_name);
         placeLocation = findViewById(R.id.location_details);
+        currentLocation = findViewById(R.id.get_currentLocation);
+        showOnMap = findViewById(R.id.show_locations);
 
-
-        Places.initialize(getApplicationContext(),"");
+        Places.initialize(getApplicationContext(),"AIzaSyCh4xhcibPH5w36QpbsSrZLlSPf6PM8Yxs");
 
         placeLocation.setFocusable(false);
         placeLocation.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +53,18 @@ public class AddPlace extends AppCompatActivity {
                 startActivityForResult(intent, 100);
             }
         });
+
+        showOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddPlace.this, MapsActivity.class);
+
+                intent.putExtra("Latitude", latitude);
+                intent.putExtra("Longitude", longitude);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -55,10 +73,17 @@ public class AddPlace extends AppCompatActivity {
         if(requestCode == 100 && resultCode == RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
             placeLocation.setText(place.getAddress());
+            latLang = String.valueOf(place.getLatLng());
+            String answer = latLang.substring(latLang.indexOf("(")+1, latLang.indexOf(")"));
+
+            String [] separated = answer.split(",");
+            latitude = separated[0];
+            longitude = separated[1];
         }
         else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 }
