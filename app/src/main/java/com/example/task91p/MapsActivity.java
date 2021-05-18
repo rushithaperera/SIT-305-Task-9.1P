@@ -18,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -30,7 +32,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LatLng latLng;
     String latitude, longitude;
-    double dlat, dlong;
+
+    ArrayList<String> latitudes;
+    ArrayList<String> longitudes;
+
+
+    double[] latitudess;
+    double[] longitudess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +55,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latitude = getIntent().getExtras().getString("Latitude");
         longitude = getIntent().getExtras().getString("Longitude");
 
-        dlat = Double.parseDouble(latitude);
-        dlong = Double.parseDouble(longitude);
+        latitudes = (ArrayList<String>) getIntent().getSerializableExtra("LatArray");
+        longitudes = (ArrayList<String>) getIntent().getSerializableExtra("LongArray");
+
+        latitudess = new double[latitudes.size()];
+        longitudess = new double[longitudes.size()];
+
+        for(int i = 0; i < latitudes.size(); i++){
+            latitudess[i] = Double.parseDouble(latitudes.get(i));
+            longitudess[i] = Double.parseDouble(longitudes.get(i));
+        }
     }
 
     /**
@@ -66,19 +82,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(dlat, dlong);
+        LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try{
-                    latLng = new LatLng(dlat, dlong);
-                    mMap.addMarker(new MarkerOptions().position(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng((latLng)));
+                    for(int i = 0; i < latitudes.size(); i++){
+                        latLng = new LatLng(latitudess[i], longitudess[i]);
+                        mMap.addMarker(new MarkerOptions().position(latLng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng((latLng)));
+                    }
                 }
                 catch (Exception e){
                     e.printStackTrace();

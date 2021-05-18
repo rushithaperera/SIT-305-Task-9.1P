@@ -18,17 +18,21 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AddPlace extends AppCompatActivity {
 
     EditText placeName, placeLocation;
-    Button currentLocation, showOnMap;
+    Button currentLocation, showOnMap, saveLocation;
 
     String latLang;
     String latitude;
     String longitude;
+
+    ArrayList<String> arrayList1 = new ArrayList<String>();
+    ArrayList<String> arrayList2 = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class AddPlace extends AppCompatActivity {
 
         placeName = findViewById(R.id.place_name);
         placeLocation = findViewById(R.id.location_details);
+        saveLocation = findViewById(R.id.save_location);
         currentLocation = findViewById(R.id.get_currentLocation);
         showOnMap = findViewById(R.id.show_locations);
 
@@ -61,8 +66,21 @@ public class AddPlace extends AppCompatActivity {
 
                 intent.putExtra("Latitude", latitude);
                 intent.putExtra("Longitude", longitude);
+                intent.putExtra("LatArray", arrayList1);
+                intent.putExtra("LongArray", arrayList2);
 
                 startActivity(intent);
+            }
+        });
+
+        saveLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList1.add(latitude);
+                arrayList2.add(longitude);
+
+                System.out.println(arrayList1);
+                System.out.println(arrayList2);
             }
         });
     }
