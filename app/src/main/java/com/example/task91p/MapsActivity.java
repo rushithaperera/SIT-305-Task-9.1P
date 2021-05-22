@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -31,14 +32,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_DIST = 5;
 
     private LatLng latLng;
-    String latitude, longitude;
 
-    ArrayList<String> latitudes;
-    ArrayList<String> longitudes;
+    ArrayList<String> savedLatitudes;
+    ArrayList<String> savedLongitudes;
 
 
-    double[] latitudess;
-    double[] longitudess;
+    double[] convertedLatitudes;
+    double[] convertedLongitudes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +52,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
 
-        latitude = getIntent().getExtras().getString("Latitude");
-        longitude = getIntent().getExtras().getString("Longitude");
+        savedLatitudes = (ArrayList<String>) getIntent().getSerializableExtra("LatArray");
+        savedLongitudes = (ArrayList<String>) getIntent().getSerializableExtra("LongArray");
 
-        latitudes = (ArrayList<String>) getIntent().getSerializableExtra("LatArray");
-        longitudes = (ArrayList<String>) getIntent().getSerializableExtra("LongArray");
+        convertedLatitudes = new double[savedLatitudes.size()];
+        convertedLongitudes = new double[savedLongitudes.size()];
 
-        latitudess = new double[latitudes.size()];
-        longitudess = new double[longitudes.size()];
-
-        for(int i = 0; i < latitudes.size(); i++){
-            latitudess[i] = Double.parseDouble(latitudes.get(i));
-            longitudess[i] = Double.parseDouble(longitudes.get(i));
+        for(int i = 0; i < savedLatitudes.size(); i++){
+            convertedLatitudes[i] = Double.parseDouble(savedLatitudes.get(i));
+            convertedLongitudes[i] = Double.parseDouble(savedLongitudes.get(i));
         }
     }
 
@@ -90,8 +87,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try{
-                    for(int i = 0; i < latitudes.size(); i++){
-                        latLng = new LatLng(latitudess[i], longitudess[i]);
+                    for(int i = 0; i < savedLatitudes.size(); i++){
+                        latLng = new LatLng(convertedLatitudes[i], convertedLongitudes[i]);
                         mMap.addMarker(new MarkerOptions().position(latLng));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng((latLng)));
                     }

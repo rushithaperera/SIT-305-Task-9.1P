@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     Button addPlace, showAll;
+
+    ArrayList<String> savedLatitudes;
+    ArrayList<String> savedLongitudes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,13 @@ public class MainActivity extends AppCompatActivity {
         showAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                savedLatitudes = (ArrayList<String>) getIntent().getSerializableExtra("LatArrays");
+                savedLongitudes = (ArrayList<String>) getIntent().getSerializableExtra("LongArrays");
+
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("LatArray", savedLatitudes);
+                intent.putExtra("LongArray", savedLatitudes);
+
                 startActivity(intent);
             }
         });

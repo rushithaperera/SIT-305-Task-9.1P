@@ -1,17 +1,35 @@
 package com.example.task91p;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -34,6 +52,8 @@ public class AddPlace extends AppCompatActivity {
     ArrayList<String> arrayList1 = new ArrayList<String>();
     ArrayList<String> arrayList2 = new ArrayList<String>();
 
+    FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +66,7 @@ public class AddPlace extends AppCompatActivity {
         showOnMap = findViewById(R.id.show_locations);
 
         Places.initialize(getApplicationContext(),"AIzaSyCh4xhcibPH5w36QpbsSrZLlSPf6PM8Yxs");
+        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         placeLocation.setFocusable(false);
         placeLocation.setOnClickListener(new View.OnClickListener() {
@@ -63,12 +84,14 @@ public class AddPlace extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AddPlace.this, MapsActivity.class);
-
-                intent.putExtra("Latitude", latitude);
-                intent.putExtra("Longitude", longitude);
+                Intent intent2 = new Intent(AddPlace.this, MainActivity.class);
                 intent.putExtra("LatArray", arrayList1);
                 intent.putExtra("LongArray", arrayList2);
 
+                intent2.putExtra("LatArrays", arrayList1);
+                intent2.putExtra("LongArrays", arrayList2);
+
+                startActivity(intent2);
                 startActivity(intent);
             }
         });
@@ -78,12 +101,68 @@ public class AddPlace extends AppCompatActivity {
             public void onClick(View v) {
                 arrayList1.add(latitude);
                 arrayList2.add(longitude);
-
-                System.out.println(arrayList1);
-                System.out.println(arrayList2);
+                Toast.makeText(AddPlace.this, "Location Saved !", Toast.LENGTH_SHORT).show();
             }
         });
+
+/*        currentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ActivityCompat.checkSelfPermission(AddPlace.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    getLocation();
+                }
+                else
+                {
+                    ActivityCompat.requestPermissions(AddPlace.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                }
+            }
+        });*/
     }
+
+/*    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 44 && grantResults.length > 0 && (grantResults[0] + grantResults[1]) == PackageManager.PERMISSION_GRANTED){
+            getLocation();
+        }
+        else
+        {
+
+        }
+    }*/
+
+/*    @SuppressLint("MissingPermission")
+    private void getLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    Location location = task.getResult();
+                    if(location != null){
+                        placeLocation.setText(String.valueOf(location.getAltitude()));
+                    }
+                    else
+                    {
+                        LocationRequest locationRequest = new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(1000)
+                                .setFastestInterval(1000)
+                                .setNumUpdates(1);
+                        LocationCallback locationCallback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(@NonNull LocationResult locationResult) {
+                                Location location1 = locationResult.getLastLocation();
+
+                            }
+                        };
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper());
+                    }
+                }
+            });
+        }
+        else
+        {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
