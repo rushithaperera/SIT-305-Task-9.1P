@@ -65,7 +65,7 @@ public class AddPlace extends AppCompatActivity {
         currentLocation = findViewById(R.id.get_currentLocation);
         showOnMap = findViewById(R.id.show_locations);
 
-        Places.initialize(getApplicationContext(),"AIzaSyCh4xhcibPH5w36QpbsSrZLlSPf6PM8Yxs");
+        Places.initialize(getApplicationContext(),"");
         //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         placeLocation.setFocusable(false);
